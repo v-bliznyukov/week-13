@@ -1,0 +1,65 @@
+EXERCISE 1:
+
+Create(p:Fighter {name: "Khabib Nurmagomedov",weight:"155"}),(pp:Fighter {name: "Rafael Dos Anjos",weight:"155"}), (p)-[:beats]->(pp)
+
+Create(p:Fighter {name: "Jon Jones",weight:"205"}),(pp:Fighter {name: "Daniel Cormier",weight:"205"}), (p)-[:beats]->(pp)
+
+Create(p:Fighter {name: "Michael Bisping",weight:"185"}),(pp:Fighter {name: "Matt Hamill",weight:"185"}), (p)-[:beats]->(pp)
+
+match (a:Fighter) where a.name= "Rafael Dos Anjos" create (b:Fighter{name: "Neil Magny", weight: "170"}),(a)-[:beats]->(b);
+
+match (a:Fighter) where a.name= "Jon Jones" create (b:Fighter{name: "Brandon Vera", weight: "205"}),(a)-[:beats]->(b);
+
+match (a:Fighter) where a.name= "Brandon Vera" create (b:Fighter{name: "Frank Mir", weight: "230"}),(a)-[:beats]->(b);
+
+match (a:Fighter) where a.name= "Frank Mir" create (b:Fighter{name: "Brock Lesnar", weight: "230"}),(a)-[:beats]->(b);
+
+match (a:Fighter) where a.name= "Neil Magny" create (b:Fighter{name: "Kelvin Gastelum", weight: "185"}),(a)-[:beats]->(b);
+
+match (a:Fighter{name:"Kelvin Gastelum"}), (b:Fighter{name:"Michael Bisping"}) CREATE (a)-[:beats]->(b);
+
+match (a:Fighter{name:"Michael Bisping"}), (b:Fighter{name:"Matt Hamill"}) CREATE (a)-[:beats]->(b);
+
+match (a:Fighter{name:"Michael Bisping"}), (b:Fighter{name:"Kelvin Gastelum"}) CREATE (a)-[:beats]->(b);
+
+match (a:Fighter{name:"Matt Hamill"}), (b:Fighter{name:"Jon Jones"}) CREATE (a)-[:beats]->(b);
+
+RETURN ALL FIGHTERS GRAPH
+
+match (a:Fighter) return a;
+
+QUERY 1:
+
+match (a:Fighter)-[:beats]->(b) with a, b, count(b) as fights where a.weight in ["155", "170", "185"] and fights > 0 return a;
+
+QUERY 2:
+
+match (a:Fighter)-[:beats]->(b), (b)-[:beats]->(a) with a, b, count(b) as fights where fights > 0 return a;
+
+QUESRY 3:
+
+match (a:Fighter)-[:beats]->(b)<-[:beats]-(c) where b.name<>"Michael Bisping" return a;
+
+QUERY 4.1 (ALL WINS):
+
+match (f:Fighter) where not ()-[:beats]->(f) return f;
+
+QUERY 4.2 (ALL LOSSES):
+
+match (f:Fighter) where not (f)-[:beats]->() return f;
+
+RETURN ALL RECORDS:
+
+match (a:Fighter) return a.name, a.weight;
+
+match (a:Fighter) return a.name, a.weight, a.record;
+
+SET A NEW PROPERTY 'RECORD':
+
+MATCH (n:Fighter{name: "Khabib Nurmagomedov"})
+SET n.record = "This is a record"
+RETURN n.name, n.record
+
+
+
+
